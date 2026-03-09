@@ -17,6 +17,32 @@ import { fetchComments, fetchVisitorStats, registerVisit, submitComment } from "
 import type { PortfolioComment, VisitorStats } from "./types";
 import "./App.css";
 
+const wait = (ms: number) =>
+  new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+
+const withRetry = async <T,>(
+  fn: () => Promise<T>,
+  attempts = 3,
+  delayMs = 1500,
+): Promise<T> => {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error;
+      if (attempt < attempts) {
+        await wait(delayMs);
+      }
+    }
+  }
+
+  throw lastError;
+};
+
 function App() {
   const [showLoader, setShowLoader] = useState(true);
   const [comments, setComments] = useState<PortfolioComment[]>([]);
@@ -29,15 +55,16 @@ function App() {
     const bootstrap = async () => {
       try {
         const [visitResult, commentsResult] = await Promise.all([
-          registerVisit(),
-          fetchComments(),
+          withRetry(() => registerVisit()),
+          withRetry(() => fetchComments()),
         ]);
 
         setStats(visitResult);
         setComments(commentsResult);
+        setApiNotice(null);
       } catch {
         setApiNotice(
-          "Backend offline. Run `npm run dev` in root to enable live visitor analytics and comments.",
+          "Backend unavailable right now. If using Render free tier, wait a bit and refresh (cold start).",
         );
       }
     };
