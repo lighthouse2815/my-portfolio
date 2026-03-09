@@ -4,8 +4,24 @@ import { addComment, getVisitorStats, listComments, recordVisit } from "./db.js"
 
 const app = express();
 const PORT = Number(process.env.PORT) || 4000;
+const allowedOrigins = (process.env.CORS_ORIGIN ?? "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const allowAllOrigins = allowedOrigins.length === 0;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (allowAllOrigins || !origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(null, false);
+    },
+  }),
+);
 app.use(express.json({ limit: "1mb" }));
 
 app.get("/api/health", (_req, res) => {

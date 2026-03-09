@@ -71,26 +71,43 @@ npm run dev
 - Vite proxies `/api` calls to `http://localhost:4000` during development.
 - The database file is ignored by git via `.gitignore`.
 
-## Deploy with GitHub Actions (GitHub Pages)
+## Deploy Frontend + Backend
 
-This repo already includes workflow: `.github/workflows/deploy-pages.yml`.
+### Frontend (GitHub Pages)
 
-### 1. Enable Pages in repository settings
+Workflow: `.github/workflows/deploy-pages.yml`
 
-- Go to `Settings` -> `Pages`
-- In `Build and deployment`, set `Source` = `GitHub Actions`
+1. Go to `Settings` -> `Pages`
+2. In `Build and deployment`, set `Source` = `GitHub Actions`
+3. Push to `main`
 
-### 2. Push to `main`
+### Backend (Render)
 
-Every push to `main` will:
-- install dependencies
-- build frontend (`npm run build:client`)
-- deploy `dist/` to GitHub Pages
+This repo includes:
+- `render.yaml`
+- `server/.env.example`
+- workflow `.github/workflows/deploy-backend-render.yml` (triggered by Render deploy hook)
 
-### 3. (Optional) Connect frontend to hosted backend
+Steps:
 
-If your backend API is deployed separately, set repository variable:
-- `Settings` -> `Secrets and variables` -> `Actions` -> `Variables`
-- Add variable: `VITE_API_BASE=https://your-backend-domain`
+1. Create a new Render Web Service from this GitHub repo
+2. Render will detect `render.yaml`
+3. In Render, copy your **Deploy Hook URL**
+4. In GitHub repo, set secret:
+   - `Settings` -> `Secrets and variables` -> `Actions` -> `Secrets`
+   - `RENDER_DEPLOY_HOOK_URL=<your render deploy hook>`
+5. Push to `main` (or manually run workflow `Deploy Backend to Render`)
 
-If not set, frontend will call relative `/api` and show offline notice when backend is unavailable.
+### Connect Frontend to Backend
+
+After backend is live (example: `https://my-portfolio-api.onrender.com`):
+
+1. In GitHub repo, set variable:
+   - `Settings` -> `Secrets and variables` -> `Actions` -> `Variables`
+   - `VITE_API_BASE=https://my-portfolio-api.onrender.com`
+2. Push to `main` or rerun workflow `Deploy Portfolio to GitHub Pages`
+
+Important:
+- `VITE_API_BASE` should be domain only, **without `/api`** suffix.
+- For CORS, backend reads `CORS_ORIGIN` (see `server/.env.example`).
+- Lowdb stores data in local file; on free cloud instances data can reset on redeploy/restart.
