@@ -1,6 +1,9 @@
 import type { PortfolioComment, VisitorStats } from "../types";
 
-const apiBase = import.meta.env.VITE_API_BASE ?? "";
+const rawApiBase = (import.meta.env.VITE_API_BASE ?? "").trim();
+const apiBase = rawApiBase
+  .replace(/\/+$/, "")
+  .replace(/\/api$/i, "");
 
 const parseJson = async <T>(response: Response): Promise<T> => {
   if (!response.ok) {
