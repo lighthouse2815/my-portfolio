@@ -1,0 +1,28 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family: "Rajdhani", sans-serif;
+  line-height: 1.45;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(73, 68, 163, 0.32), transparent 28%),
+    radial-gradient(circle at 78% 2%, rgba(12, 88, 186, 0.28), transparent 34%),
+    linear-gradient(180deg, #04060d, #050915 32%, #060b19);
+  color: #e7f6ff;
+}
+
+#root {
+  min-height: 100vh;
+}
