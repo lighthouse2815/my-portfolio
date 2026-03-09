@@ -70,3 +70,27 @@ npm run dev
 
 - Vite proxies `/api` calls to `http://localhost:4000` during development.
 - The database file is ignored by git via `.gitignore`.
+
+## Deploy with GitHub Actions (GitHub Pages)
+
+This repo already includes workflow: `.github/workflows/deploy-pages.yml`.
+
+### 1. Enable Pages in repository settings
+
+- Go to `Settings` -> `Pages`
+- In `Build and deployment`, set `Source` = `GitHub Actions`
+
+### 2. Push to `main`
+
+Every push to `main` will:
+- install dependencies
+- build frontend (`npm run build:client`)
+- deploy `dist/` to GitHub Pages
+
+### 3. (Optional) Connect frontend to hosted backend
+
+If your backend API is deployed separately, set repository variable:
+- `Settings` -> `Secrets and variables` -> `Actions` -> `Variables`
+- Add variable: `VITE_API_BASE=https://your-backend-domain`
+
+If not set, frontend will call relative `/api` and show offline notice when backend is unavailable.
