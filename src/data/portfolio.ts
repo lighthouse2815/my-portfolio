@@ -9,7 +9,7 @@ export const profile = {
   name: "Nguyen Hai Dang",
   title: "Full Stack Developer",
   intro:
-    "I build immersive web experiences and practical software systems with clean architecture, fast interfaces, and strong backend foundations.",
+    "We code in the dark so that our family can live in the light.",
   about: [
     "Second-year IT student focused on building production-ready software.",
     "Passionate about software development, with a strong bias for writing maintainable code.",
@@ -21,7 +21,7 @@ export const profile = {
 export const socials: SocialLink[] = [
   {
     label: "GitHub",
-    href: "https://github.com/",
+    href: "https://github.com/lighthouse2815",
   },
   {
     label: "LinkedIn",
@@ -29,7 +29,7 @@ export const socials: SocialLink[] = [
   },
   {
     label: "Email",
-    href: "mailto:nguyenhaidang.dev@gmail.com",
+    href: "mailto:alexnguyena47@gmail.com",
   },
 ];
 
@@ -83,7 +83,7 @@ export const projects: ProjectItem[] = [
     description:
       "Real-time messaging app with channel-based conversations, clean mobile UI, and persistent local caching.",
     stack: ["Java", "Android", "REST API"],
-    github: "https://github.com/",
+    github: "https://github.com/lighthouse2815/chat-app",
     previewLabel: "Realtime Chat Preview",
   },
   {
@@ -91,7 +91,7 @@ export const projects: ProjectItem[] = [
     description:
       "2D platformer with collision detection, level progression, score systems, and responsive controls.",
     stack: ["Python", "Pygame", "Game Logic"],
-    github: "https://github.com/",
+    github: "https://github.com/lighthouse2815/my-profile",
     previewLabel: "Gameplay Snapshot",
   },
 ];
